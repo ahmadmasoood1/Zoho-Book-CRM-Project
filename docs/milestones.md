@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | 0.1 (Draft for sign-off) |
-| **Date** | 4 October 2026 |
+| **Version** | 0.2 (Draft for sign-off) |
+| **Date** | 7 October 2026 |
 | **Related docs** | `PRD.md`, `Architecture.md`, `Rules.md` |
 
 There is no fixed deadline, so work is phased by priority. A milestone starts only when the previous milestone's **exit criteria** are met and signed off. Effort is a rough estimate for one implementer and will be re-estimated at the start of each milestone.
@@ -64,7 +64,7 @@ There is no fixed deadline, so work is phased by priority. A milestone starts on
 
 ### M2 — Bot core
 **Goal:** Secure skeleton that receives and answers messages.
-- **Deliverables:** WF-00 Inbound, WF-01 Channel Adapter, WF-02 Auth & Session, WF-40 User Admin, WF-90 Error Handler, WF-93 Housekeeping
+- **Deliverables:** WF-00 Inbound, WF-01 Channel Adapter, WF-02 Auth & Session, WF-08 PIN Handler, WF-40 User Admin, WF-90 Error Handler, WF-93 Housekeeping
 - **Covers:** FR-1.1 – FR-1.5, FR-11.1, NFR-3, NFR-9
 - **Exit criteria**
   - Unknown users are rejected and logged
@@ -75,7 +75,7 @@ There is no fixed deadline, so work is phased by priority. A milestone starts on
 
 ### M3 — AI understanding & confirm flow
 **Goal:** The bot understands requests and safely confirms them.
-- **Deliverables:** WF-03 Media Normaliser, WF-04 Intent Parser, WF-05 Entity Resolver, WF-06 Draft & Confirm, WF-07 Router; prompt v1; schemas v1
+- **Deliverables:** WF-03 Media Normaliser, WF-04 Intent Parser, WF-05 Entity Resolver, WF-06 Draft & Confirm, WF-07 Router, WF-94 Draft Expiry; prompt v1; schemas v1
 - **Covers:** FR-2.1 – FR-2.7, FR-3.1 – FR-3.4
 - **Exit criteria**
   - ≥ 90% intent accuracy on the test set (all 4 languages)
@@ -152,6 +152,7 @@ Users, roles, PINs, permission matrix, logs, usage, and cost.
 
 ### M15 — Multi-client (SaaS)
 Tenant onboarding (connect own Zoho Books via OAuth), plans and billing, tenant isolation tests, support process.
+Also: a bot→tenant mapping (e.g. `channel_bots`: tenant, channel, bot identifier, webhook path) replaces the Phase 1 `TENANT_ID` env variable; `inbound_updates` keys assume one bot per tenant and channel (CR-013, CR-016).
 
 ---
 
@@ -169,3 +170,10 @@ Tenant onboarding (connect own Zoho Books via OAuth), plans and billing, tenant 
 | M7 | | | |
 | M8 | | | |
 | M9 | | | |
+
+## Change history
+
+| Version | Date | Change | CR | By |
+|---|---|---|---|---|
+| 0.1 | 2026-10-04 | Initial draft | — | Architect |
+| 0.2 | 2026-10-07 | M2 + WF-08, M3 + WF-94, M15 bot→tenant mapping note | CR-010, CR-014, CR-016 | Architect |

@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | 0.1 (Draft for sign-off) |
-| **Date** | 4 October 2026 |
+| **Version** | 0.2 (Draft for sign-off) |
+| **Date** | 7 October 2026 |
 | **Status** | Draft — must be approved before implementation (see `Rules.md`) |
 | **Related docs** | `PRD.md`, `milestones.md`, `Rules.md` |
 
@@ -92,6 +92,7 @@ Modular sub-workflows, called through the **Execute Workflow** node. Naming: `WF
 | WF-05 | Entity Resolver | Search customers/items/invoices in Zoho; disambiguation |
 | WF-06 | Draft & Confirm | Build preview, store pending action, handle Confirm/Edit/Cancel, PIN check |
 | WF-07 | Router | Send a validated intent to the right domain workflow |
+| WF-08 | PIN Handler | The only workflow that receives a PIN: delete message, verify or set up, return result only (CR-010) |
 | WF-10 | Customers | Create, update, get, search, balance |
 | WF-11 | Items | Create, update, get, search |
 | WF-12 | Quotations | Create, update, get, list, status, convert, PDF |
@@ -105,6 +106,7 @@ Modular sub-workflows, called through the **Execute Workflow** node. Naming: `WF
 | WF-91 | Zoho Auth | Get/refresh access token, cache until expiry |
 | WF-92 | Zoho Client | One shared HTTP wrapper: org ID, retries, backoff on 429/5xx, error mapping |
 | WF-93 | Housekeeping | Expire drafts, purge old logs, daily health summary |
+| WF-94 | Draft Expiry | Every 5 min: expire drafts, remove stale buttons, notify the user (CR-014) |
 
 **Rule:** domain workflows (WF-10…WF-20) never talk to Telegram, and channel workflows never talk to Zoho. This keeps WhatsApp a drop-in addition.
 
@@ -167,6 +169,10 @@ Permissions are stored in `role_permissions`, so changing them is a data change,
 ## 8. Intent catalogue (MVP)
 
 `help`, `cancel`, `customer.create`, `customer.update`, `customer.get`, `customer.search`, `customer.balance`, `item.create`, `item.update`, `item.get`, `item.search`, `quote.create`, `quote.update`, `quote.get`, `quote.list`, `quote.mark_accepted`, `quote.mark_declined`, `quote.convert_to_invoice`, `quote.pdf`, `invoice.create`, `invoice.update`, `invoice.get`, `invoice.list`, `invoice.void`, `invoice.pdf`, `payment.create`, `payment.get`, `payment.receipt_pdf`, `expense.create`, `report.run`, `user.add`, `user.remove`, `user.set_role`, `user.reset_pin`, `audit.summary`.
+
+**Should (M11):** `report.schedule` (Owner + PIN, CR-017).
+
+Intents for later milestones are seeded **inactive** and activated by their milestone's first migration; inactive intents are denied and not offered to the LLM (CR-017).
 
 Each intent has a **JSON schema** listing required and optional fields. The schema is used both in the LLM prompt and by n8n validation.
 
@@ -252,3 +258,10 @@ New decisions are added here only through the change process in `Rules.md`.
 | T3 | Supabase hosted vs self-hosted on the same VPS | Open |
 | T4 | VPS provider/region (latency to Zoho DC and Telegram) | Open |
 | T5 | E-invoicing: fields Zoho will require once the client is onboarded | Open — depends on revenue band |
+
+## Change history
+
+| Version | Date | Change | CR | By |
+|---|---|---|---|---|
+| 0.1 | 2026-10-04 | Initial draft | — | Architect |
+| 0.2 | 2026-10-07 | §4: WF-08 PIN Handler, WF-94 Draft Expiry; §8: `report.schedule`, inactive future intents | CR-010, CR-014, CR-017 | Architect |

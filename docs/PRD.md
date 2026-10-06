@@ -3,8 +3,8 @@
 | | |
 |---|---|
 | **Document** | Product Requirements Document |
-| **Version** | 0.1 (Draft for sign-off) |
-| **Date** | 4 October 2026 |
+| **Version** | 0.2 (Draft for sign-off) |
+| **Date** | 7 October 2026 |
 | **Status** | Draft — must be approved before any implementation starts (see `Rules.md`) |
 | **Related docs** | `Architecture.md`, `milestones.md`, `Rules.md` |
 
@@ -230,7 +230,7 @@ Each requirement has an ID so `milestones.md`, tests, and change requests can re
 | NFR-2 | Availability | 99% monthly uptime of the bot service |
 | NFR-3 | Security | HTTPS only; Telegram webhook secret token; secrets in n8n credentials/env; Zoho tokens encrypted at rest; PINs hashed |
 | NFR-4 | Privacy | Client agrees in writing that messages, voice, and images are processed by OpenAI; no accounting data is kept outside Zoho Books except logs and drafts |
-| NFR-5 | Data retention | Drafts are deleted after 7 days; message logs are kept for 90 days; audit logs for 5 years (UAE record-keeping — confirm with the client's accountant) |
+| NFR-5 | Data retention | Drafts are deleted after 7 days, or redacted (Zoho IDs kept, content cleared) when referenced by the audit log (CR-015); message logs are kept for 90 days; audit logs for 5 years (UAE record-keeping — confirm with the client's accountant) |
 | NFR-6 | Backups | Daily backups of the n8n DB and Supabase, kept for 14 days; restore tested before go-live |
 | NFR-7 | Scalability | Every bot-side table has `tenant_id`; no client-specific values hard-coded in workflows |
 | NFR-8 | Maintainability | Modular n8n workflows, one per domain; channel adapter layer so WhatsApp can be added without changing business logic |
@@ -278,3 +278,10 @@ Each requirement has an ID so `milestones.md`, tests, and change requests can re
 - **Tenant:** one client business. Phase 1 has one tenant.
 - **TRN:** UAE Tax Registration Number.
 - **Idempotency key:** a unique ID per action so it can never be saved twice.
+
+## Change history
+
+| Version | Date | Change | CR | By |
+|---|---|---|---|---|
+| 0.1 | 2026-10-04 | Initial draft | — | Architect |
+| 0.2 | 2026-10-07 | NFR-5: audited drafts are redacted, not deleted | CR-015 | Architect |
