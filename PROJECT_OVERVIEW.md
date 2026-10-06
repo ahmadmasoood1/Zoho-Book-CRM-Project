@@ -67,7 +67,7 @@ M0 Docs & sign-off (current) → M1 Infra & Zoho setup → M2 Bot core (auth, ro
 | `docs/milestones.md` | M0–M15 with deliverables and exit criteria |
 | `docs/Rules.md` | Architect/Implementer roles, docs-first gate, Gap Protocol, change process |
 | `docs/Workflows.md` | n8n workflow register, conventions, specs, starter JSON template, exported JSON store |
-| `docs/Database.md` | Supabase schema SQL (tested on Postgres 16), functions, seed data, retention |
+| `docs/Database.md` | Supabase schema SQL (PostgreSQL 15+; tested version recorded at M1, CR-007), functions, seed data, retention |
 | `docs/SelfImprovement.md` | Lessons log, retros, role self-checks, AI improvement log |
 | `docs/Templates.md` | WhatsApp templates (EN/AR/UR) for Meta approval: utility, authentication, marketing |
 

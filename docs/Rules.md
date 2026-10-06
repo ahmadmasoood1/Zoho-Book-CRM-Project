@@ -2,8 +2,8 @@
 
 | | |
 |---|---|
-| **Version** | 0.1 |
-| **Date** | 4 October 2026 |
+| **Version** | 0.2 |
+| **Date** | 6 October 2026 |
 | **Applies to** | Everyone working on this project: the Architect, the Implementer, and any AI agent acting in either role |
 | **Related docs** | `PRD.md`, `Architecture.md`, `milestones.md` |
 
@@ -108,6 +108,10 @@ A **gap** is anything where the system, the build, or the documents don't match 
 > - If the Implementer gives a **proper justification and feedback** that confirms a change is needed, the change is made through the change process (§5).
 > - If the Implementer has not given feedback, **no change is made.**
 > - Without the Implementer's feedback, **nothing changes**: not the documents, not the workflows, not the configuration.
+> - If the Implementer says no change is needed, **nothing changes**; the reason is recorded and the GAP is closed.
+> - When a change is justified, the **documents are updated first** (via a CR, §5), and only then does the Implementer build.
+> - This applies to **every** gap, however small or obvious.
+> - The Gap Query is logged as `GAP-nnn` in `docs/gaps.md` and sent to the Implementer as a copyable handoff box (`Memory.md` M-002).
 
 ### 4.2 Steps
 
@@ -210,7 +214,14 @@ flowchart TD
 
 | Document | Version | Architect | Implementer | Client | Date |
 |---|---|---|---|---|---|
-| PRD.md | 0.1 | | | | |
-| Architecture.md | 0.1 | | | | |
-| milestones.md | 0.1 | | | | |
-| Rules.md | 0.1 | | | | |
+| PRD.md | 0.2 | | | | |
+| Architecture.md | 0.2 | | | | |
+| milestones.md | 0.2 | | | | |
+| Rules.md | 0.2 | | | | |
+
+## 10. Change history
+
+| Version | Date | Change | CR | By |
+|---|---|---|---|---|
+| 0.1 | 2026-10-04 | Initial rules | — | Architect |
+| 0.2 | 2026-10-06 | §4.1 extended with the Project Owner's Gap Protocol instruction (no change when the Implementer says none is needed; docs first; applies to every gap; handoff box) | CR-001 | Architect |

@@ -62,6 +62,9 @@
 | L-002 | Check each requested feature against the business type | Surprise | Architect | Active |
 | L-003 | Write the decision record before producing deliverables | Practice | Architect | Active |
 | L-004 | Grill for operational details, not just features | Practice | Architect | Active |
+| L-005 | Re-check execution order when a CR moves or adds SQL | Mistake | Architect | Active |
+| L-006 | Design the unhappy path of every input state | Mistake | Architect | Active |
+| L-007 | Pin down the runtime identity before designing privileges | Mistake | Architect | Active |
 
 ### L-001: Confirm country and Zoho edition before designing features
 - **Date:** 2026-10-04 · **Milestone:** M0 · **Type:** Mistake
@@ -97,6 +100,30 @@
 - **What happened:** The questions that changed the design most were operational, not functional. They covered who may do what, confirmation, PINs, document delivery, data storage, and hosting.
 - **Lesson:** Discovery must cover the operational checklist in §9, not only "which features".
 - **Status:** Active
+
+### L-005: Re-check execution order when a CR moves or adds SQL
+- **Date:** 2026-10-07 · **Milestone:** M0 · **Type:** Mistake
+- **Role(s):** Architect
+- **Linked:** GAP-016 / CR-003 / CR-009
+- **What happened:** CR-003 added function revokes and grants to `0007_rls.sql` with the comment "run after 0008". The migration order runs 0007 first, so n8n would have lost access to every function in 0008.
+- **Why it happened (root cause):** the change was placed in the section with the closest topic (security), not checked against the order the files run in.
+- **Impact:** none in production; the Implementer caught it before build. One extra CR.
+- **Lesson:** for every CR that adds or moves SQL, check the migration order table in the milestone note and check that every object it references already exists at that point.
+- **Action:** add "migration order re-checked" to the Architect self-check (§6.1). · **Owner:** Architect · **Due:** 2026-10-07
+- **Check:** no ordering GAP in M1/M2 reviews.
+- **Status:** Active
+
+### L-006: Design the unhappy path of every input state
+- **Date:** 2026-10-07 · **Milestone:** M0 · **Type:** Mistake · **Role(s):** Architect · **Linked:** GAP-001 C4, GAP-020 (b)
+- **What happened:** twice, an input rule was designed for the expected input only: bare digits treated as a PIN (C4), and every message in a PIN state sent to verification (GAP-020 b).
+- **Lesson:** for every `awaiting` state, list what else the user might send (cancel, another request, voice, photo, a late reply) and define the handling.
+- **Action:** add an "other inputs" row to each state in design notes. · **Owner:** Architect · **Status:** Active
+
+### L-007: Pin down the runtime identity before designing privileges
+- **Date:** 2026-10-07 · **Milestone:** M0 · **Type:** Mistake · **Role(s):** Architect · **Linked:** GAP-020 (a)
+- **What happened:** revokes and RLS were designed (CR-003/009/019) without fixing which database role n8n logs in as; the owner role would ignore them all.
+- **Lesson:** any privilege design starts by naming the exact runtime role of every caller. Also check the platform's **defaults** for new objects (e.g. Supabase grants new tables to anon; views bypass RLS) instead of assuming objects start closed (repeated in GAP-021).
+- **Action:** the design-note template §6 gets a "runtime identities" line. · **Owner:** Architect · **Status:** Active
 
 ---
 
@@ -146,6 +173,9 @@ Each role reviews its checklist at the start of every milestone and notes one im
 - [ ] Did I check this file's **Active** lessons before designing?
 - [ ] Are acceptance criteria measurable (numbers, not adjectives)?
 - [ ] Did I check Zoho Books and Meta/Telegram limits instead of assuming them?
+- [ ] For every SQL change: did I re-check the migration order and that referenced objects already exist? (L-005)
+- [ ] For every input state: did I define what happens with unexpected input? (L-006)
+- [ ] For every privilege rule: did I name the exact runtime role of each caller? (L-007)
 
 **Growth goals**
 | Date | Goal | How I'll practise | Review date | Result |
